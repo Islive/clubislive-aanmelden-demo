@@ -2,7 +2,7 @@
  * Bootstrap
  */
 document.addEventListener('DOMContentLoaded', function() {
-	var api         = new Api("http://wks-ronald:1337"),
+	var api         = new Api("http://api.clubislive.nl/"),
 	    formElement = document.forms[0];
 
 	function formSubmit(e) {
