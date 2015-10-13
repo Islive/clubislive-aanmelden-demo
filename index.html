@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]>
+<html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>
+<html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>
+<html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>
+<html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Aanmeldformulier</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/api.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+<div id="container">
+    <div id="contact-form" class="clearfix">
+        <h1>Aanmelden</h1>
+
+        <form>
+            <fieldset name="user">
+                <label for="user_username">username</label>
+                <input id="user_username"
+                       name="username"
+                       placeholder="Enter your username"
+                       type="text"
+                       required="0">
+                <label
+                    for="user_email">email</label>
+                <input id="user_email" name="email"
+                       placeholder="Enter your email address" type="text"
+                       required="0">
+                <label for="user_password">Password</label>
+                <input
+                    id="user_password" name="password" placeholder="Enter your password" type="password"
+                    required="0">
+            </fieldset>
+            <fieldset name="personal">
+                <label for="personal_languages">languages</label>
+                <input
+                    id="personal_languages" name="languages" placeholder="languages" type="text"
+                    required="0">
+                <label for="personal_dateOfBirth">Birth date</label>
+                <input id="personal_dateOfBirth"
+                       name="dateOfBirth"
+                       placeholder="Your birth date"
+                       type="date" required="0" value="1990-01-01">
+                <label for="personal_gender_m">Male</label>
+                <input id="personal_gender_m" name="gender" type="radio" value="m">
+                <label for="personal_gender_m">Female</label>
+                <input id="personal_gender_f" name="gender" type="radio" value="f">
+            </fieldset>
+            <fieldset name="address">
+                <label for="address_address">address</label>
+                <input id="address_address"
+                       name="address"
+                       placeholder="Enter your street and number"
+                       type="text"
+                       required="0">
+                <label
+                    for="address_city">city</label>
+                <input id="address_city" name="city"
+                       placeholder="The city where you live" type="text"
+                       required="0">
+                <label
+                    for="address_country">country</label>
+                <input id="address_country" name="country"
+                       placeholder="The country" type="text"
+                       required="0">
+                <label
+                    for="address_postcode">Postal code (optional)</label>
+                <input id="address_postcode" name="undefined"
+                       placeholder="The postal code" type="text"
+                       required="0">
+            </fieldset>
+            <fieldset name="bankDetails">
+                <label for="bankDetails_country">country</label>
+                <input
+                    id="bankDetails_country" name="country" placeholder="NL" type="text" required="0">
+                <label
+                    for="bankDetails_bic">bic</label>
+                <input id="bankDetails_bic" name="bic"
+                       placeholder="CEDaaaELULLXXX" type="text"
+                       required="0">
+                <label
+                    for="bankDetails_iban">iban</label>
+                <input id="bankDetails_iban" name="iban"
+                       placeholder="000000000000000000" type="text"
+                       required="0"></fieldset>
+            <fieldset name="identity">
+                <label for="identity_fullName">Fullname</label>
+                <input id="identity_fullName"
+                       name="fullName"
+                       placeholder="Your full name as found on your passport"
+                       type="text"
+                       required="0">
+                <label
+                    for="identity_ssn">Social security number</label>
+                <input id="identity_ssn" name="ssn"
+                       placeholder="Your social security number" type="text"
+                       required="0">
+                <label
+                    for="identity_nationality">nationality</label>
+                <input id="identity_nationality"
+                       name="nationality"
+                       placeholder="Your nationality"
+                       type="text" required="0">
+                <label
+                    for="identity_identityType">identityType</label>
+                <input id="identity_identityType"
+                       name="identityType"
+                       placeholder="Type of identification on the photo: passport, driving license"
+                       type="text" required="0">
+                <label
+                    for="identity_photoFrontData">photoFrontData</label>
+                <input id="identity_photoFrontData"
+                       name="photoFrontData"
+                       placeholder="test" type="text"
+                       required="0">
+                <label
+                    for="identity_photoFrontMimeType">photoFrontMimeType</label>
+                <input
+                    id="identity_photoFrontMimeType" name="photoFrontMimeType" placeholder="png" type="text"
+                    required="0">
+                <label for="identity_photoBackData">photoBackData</label>
+                <input
+                    id="identity_photoBackData" name="photoBackData" placeholder="test" type="text"
+                    required="0">
+                <label for="identity_photoBackMimeType">photoBackMimeType</label>
+                <input
+                    id="identity_photoBackMimeType" name="photoBackMimeType" placeholder="png" type="text"
+                    required="0"></fieldset>
+
+                <button type="submit">Registreer</button>
+        </form>
+
+        <ul id="errors">
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>
