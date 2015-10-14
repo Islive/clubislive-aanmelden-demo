@@ -1,18 +1,19 @@
-function Api(url) {
-	this.url        = url;
+function Api(url, apiKey) {
+  this.url        = url;
+  this.apiKey     = apiKey;
   this.apiVersion = "1";
 
-	for (var methodName in this.performer) {
-		this.performer[methodName] = this.performer[methodName].bind(this);
-	}
+  for (var methodName in this.performer) {
+    this.performer[methodName] = this.performer[methodName].bind(this);
+  }
 }
 
 Api.prototype = {
-	client: function() {
-		var xhr = new XMLHttpRequest();
+  client: function() {
+    var xhr = new XMLHttpRequest();
 
-		return xhr;
-	},
+    return xhr;
+  },
 
   /**
    * Serialize the given object to an query string.
@@ -33,165 +34,168 @@ Api.prototype = {
     return str.join("&");
   },
 
-	request: function(method, url, params, callback) {
-		if (typeof params === 'function') {
-			callback = params;
-			params   = {};
-		}
+  request: function(method, url, params, callback) {
+    if (typeof params === 'function') {
+      callback = params;
+      params   = {};
+    }
 
-		if (method !== "GET" && method !== "POST") {
-			throw new Error("Invalid method " + method);
-		}
+    if (method !== "GET" && method !== "POST") {
+      throw new Error("Invalid method " + method);
+    }
 
-		if (typeof params !== "object") {
-			throw new Error("Params is not an object");
-		}
+    if (typeof params !== "object") {
+      throw new Error("Params is not an object");
+    }
 
-		if (typeof callback !== "function") {
-			throw new Error("Callback is not an function");
-		}
+    if (typeof callback !== "function") {
+      throw new Error("Callback is not an function");
+    }
 
-		var c        = this.client(),
+    var c        = this.client(),
         paramStr = this.serialize(params);
 
-    c.open(method, this.url + '/' + url, true);
+    c.open(method, (this.url + url) , true);
+
+    c.setRequestHeader('x-apikey',  this.apiKey);
+    c.setRequestHeader('x-version', this.apiVersion);
 
     if (method === "POST") {
       c.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     }
 
     c.onreadystatechange = function() {
-			var response = null,
-				error    = null;
+      var response = null,
+        error    = null;
 
-			if (c.readyState !== 4) return;
+      if (c.readyState !== 4) return;
 
-			try {
-				response = JSON.parse(c.responseText);
-			} catch (exception) {
-				response = null;
-				error    = {
-					error	   : exception
-				};
-			}
+      try {
+        response = JSON.parse(c.responseText);
+      } catch (exception) {
+        response = null;
+        error    = {
+          error    : exception
+        };
+      }
 
-			if (error != null) {
-				error.status     = c.status;
-				error.readyState = c.readyState;
-			}
+      if (error != null) {
+        error.status     = c.status;
+        error.readyState = c.readyState;
+      }
 
-			callback(error, response);
-		};
+      callback(error, response);
+    };
 
-		c.send(paramStr);
-	},
+    c.send(paramStr);
+  },
 
-	/**
-	 * Convert a Form object to an nested object
-	 * @param {HtmlElement} formElement
-	 * @returns {{}}
-	 */
-	formValues: function(formElement) {
-		var fieldsets = formElement.childNodes,
-			  vars 	    = {};
+  /**
+   * Convert a Form object to an nested object
+   * @param {HtmlElement} formElement
+   * @returns {{}}
+   */
+  formValues: function(formElement) {
+    var fieldsets = formElement.childNodes,
+        vars      = {};
 
-		for (var i in fieldsets) {
-			var fieldset 	 = fieldsets[i],
-				fieldsetVars = {},
-				inputs 		 = fieldset.childNodes;
+    for (var i in fieldsets) {
+      var fieldset   = fieldsets[i],
+        fieldsetVars = {},
+        inputs     = fieldset.childNodes;
 
-			if (fieldset.tagName !== 'FIELDSET') {
-				continue;
-			}
+      if (fieldset.tagName !== 'FIELDSET') {
+        continue;
+      }
 
-			for (var i in inputs) {
-				var input = inputs[i];
+      for (var i in inputs) {
+        var input = inputs[i];
 
-				if (input.tagName !== 'INPUT') {
-					continue;
-				}
+        if (input.tagName !== 'INPUT') {
+          continue;
+        }
 
-				fieldsetVars[input.name] = input.value;
-			}
+        fieldsetVars[input.name] = input.value;
+      }
 
-			vars[fieldset.name] = fieldsetVars;
-		}
+      vars[fieldset.name] = fieldsetVars;
+    }
 
-		return vars;
-	},
+    return vars;
+  },
 
-	/**
-	 * Do a post call
-	 *
-	 * @param {string} url
-	 * @param {{}} 	   parameters
-	 * @param {Function(error, result)} callback
-	 *
-	 * @returns Api
-	 */
-	post: function(url, params, callback) {
-		this.request("POST", url, params, callback);
+  /**
+   * Do a post call
+   *
+   * @param {string} url
+   * @param {{}}     parameters
+   * @param {Function(error, result)} callback
+   *
+   * @returns Api
+   */
+  post: function(url, params, callback) {
+    this.request("POST", url, params, callback);
 
-		return this;
-	},
+    return this;
+  },
 
-	/**
-	 * Do a get call
-	 *
-	 * @param {string} url
-	 * @param {{}} 	   parameters
-	 * @param {Function(error, result)} callback
-	 *
-	 * @returns Api
-	 */
-	get: function(url, params, callback) {
-		this.request("GET", url, params, callback);
+  /**
+   * Do a get call
+   *
+   * @param {string} url
+   * @param {{}}     parameters
+   * @param {Function(error, result)} callback
+   *
+   * @returns Api
+   */
+  get: function(url, params, callback) {
+    this.request("GET", url, params, callback);
 
-		return this;
-	},
+    return this;
+  },
 
-	/**
-	 * @param {HtmlElement} formElement
-	 * @param {{}} 			object Nested object with { fieldsetName: { inputName: { placeholder: "", value: "", type: "text" } }  }
-	 */
-	convertObjectToForm: function(formElement, object) {
-		for (var fieldsetName in object) {
-			var fieldset  		= object[fieldsetName],
-				fieldsetElement = document.createElement('fieldset');
+  /**
+   * @param {HtmlElement} formElement
+   * @param {{}}      object Nested object with { fieldsetName: { inputName: { placeholder: "", value: "", type: "text" } }  }
+   */
+  convertObjectToForm: function(formElement, object) {
+    for (var fieldsetName in object) {
+      var fieldset      = object[fieldsetName],
+        fieldsetElement = document.createElement('fieldset');
 
-			fieldsetElement.name = fieldsetName;
+      fieldsetElement.name = fieldsetName;
 
-			for (var inputName in fieldset) {
-				var input = typeof fieldset[inputName] === 'object' ? fieldset[inputName] : { name : inputName, placeholder: fieldset[inputName] },
-					  id    = fieldsetName + '_' + inputName;
+      for (var inputName in fieldset) {
+        var input = typeof fieldset[inputName] === 'object' ? fieldset[inputName] : { name : inputName, placeholder: fieldset[inputName] },
+            id    = fieldsetName + '_' + inputName;
 
-				var labelElement = document.createElement('label'),
-					  inputElement = document.createElement('input');
+        var labelElement = document.createElement('label'),
+            inputElement = document.createElement('input');
 
-				labelElement.setAttribute('for', id);
-				labelElement.textContent = input.label || input.name;
+        labelElement.setAttribute('for', id);
+        labelElement.textContent = input.label || input.name;
 
-				inputElement.id   	 	 = id;
-				inputElement.name 		 = input.name;
-				inputElement.placeholder = input.placeholder || input.name;
-				inputElement.type 		 = input.type || 'text';
-				inputElement.value       = input.value || 'wawah';
-				inputElement.setAttribute('required', input.required || 0);
+        inputElement.id        = id;
+        inputElement.name      = input.name;
+        inputElement.placeholder = input.placeholder || input.name;
+        inputElement.type      = input.type || 'text';
+        inputElement.value       = input.value || 'wawah';
+        inputElement.setAttribute('required', input.required || 0);
 
-				fieldsetElement.appendChild(labelElement);
-				fieldsetElement.appendChild(inputElement);
-			}
+        fieldsetElement.appendChild(labelElement);
+        fieldsetElement.appendChild(inputElement);
+      }
 
-			formElement.appendChild(fieldsetElement);
-		};
-	},
+      formElement.appendChild(fieldsetElement);
+    };
+  },
 
-	performer: {
-		checkUsername: function(username, callback) {
-			return this.get("performer/check-username/" + username, {}, callback);
-		},
-		register : function(form, callback) {
-			return this.post("performer", form, callback);
-		}
-	}
+  performer: {
+    checkUsername: function(username, callback) {
+      return this.get("performer/check-username/" + username, {}, callback);
+    },
+    register : function(form, callback) {
+      return this.post("performer", form, callback);
+    }
+  }
 };
