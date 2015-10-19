@@ -2,20 +2,18 @@
  * Bootstrap
  */
 document.addEventListener('DOMContentLoaded', function() {
-	var api         = new Api("http://api.clubislive.nl/"),
-	    formElement = document.forms[0];
+  var api = new Api(
+      "https://api.clubislive.nl/",
+      "<JOUW API KEY>"
+    ),
+    formElement = document.forms[0];
 
-	function formSubmit(e) {
-		var vars = api.formValues(formElement);
+  function formSubmit(e) {
+    var vars = api.formValues(formElement);
 
-    console.log('huh');
+    if (e) e.preventDefault();
 
-		if (e) e.preventDefault();
-
-
-		api.performer.register(vars, function(error, result) {
-			console.log("ANSWER", arguments);
-
+    api.performer.register(vars, function(error, result) {
       var errorsElement = document.querySelector('#errors');
 
       errorsElement.style.display = 'none';
@@ -46,18 +44,18 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         }
       }
-		});
+    });
 
-		return false;
-	}
+    return false;
+  }
 
-	formElement.onsubmit = formSubmit;
+  formElement.onsubmit = formSubmit;
 
-	window.user_username.addEventListener('blur', function() {
-		api.performer.checkUsername(window.user_username.value, function(error, result) {
-			if (result.Errors && result.Errors.username) {
-				alert("Deze gebruikersnaam is al in gebruik");
-			}
-		});
-	});
+  window.user_username.addEventListener('blur', function() {
+    api.performer.checkUsername(window.user_username.value, function(error, result) {
+      if (result.Errors && result.Errors.username) {
+        alert("Deze gebruikersnaam is al in gebruik");
+      }
+    });
+  });
 });
