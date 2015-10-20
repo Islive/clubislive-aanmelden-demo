@@ -6,12 +6,17 @@ document.addEventListener('DOMContentLoaded', function() {
       "https://api.clubislive.nl/",
       "<JOUW API KEY>"
     ),
+    testMode    = true,
     formElement = document.forms[0];
 
   function formSubmit(e) {
     var vars = api.formValues(formElement);
 
     if (e) e.preventDefault();
+
+    if (testMode) {
+      vars.test = true;
+    }
 
     api.performer.register(vars, function(error, result) {
       var errorsElement = document.querySelector('#errors');
