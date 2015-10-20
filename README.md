@@ -1,7 +1,8 @@
 This setup contains all the necessary files to make a connection with our API and all the mandatory fields for a successfull registration.
 
 Make contact with the API:
-- in the folder /js/, you will find index.js. Here you can set the connection URL for our API.
+- in the folder /js/, you will find index.js. Here you can place your API key.
+- Replace <JOUW API KEY> with the key you generated at VPS Cash.
 
 Change styling:
 - index.html is just an example. You can change all the HTML elements if you like. Want to use more DIVS? Go ahead. Include Bootstrap? No problem. The only mandatory fields are the input and label fields. 
